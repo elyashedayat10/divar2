@@ -52,5 +52,5 @@ class CategoryDeleteVIew(AdminAccessMixin, View):
         category_id = kwargs.get("pk")
         category_obj = get_object_or_404(Category, id=category_id)
         category_obj.delete()
-        messages.success(request, "", "success")
-        return redirect("")
+        messages.success(request, "دسته مورد نظر با موفقیت حذف شد", "success")
+        return redirect("category:parent")
