@@ -7,11 +7,13 @@ from categories.api.serializers import CategorySerializer
 from ..models import Bookmark, Image, Note, WantAd
 
 
-class ImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Image
-        fields = ("id", "image")
-        read_only_fields = ("id",)
+class ImageSerializer(serializers.Serializer):
+      image = Base64ImageField()
+
+#     class Meta:
+#         model = Image
+#         fields = ("id", "image")
+#         read_only_fields = ("id",)
 
 
 class WandAdSerializers(serializers.ModelSerializer):
