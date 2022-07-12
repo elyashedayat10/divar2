@@ -217,3 +217,14 @@ from .serializers import ImageSerializer
 class WantCreateApiView(generics.CreateAPIView):
     serializer_class = WandAdCreateSerializers
     queryset = WantAd.objects.all()
+    
+    def post(self, request, *args, **kwargs):
+         serializer = WandAdCreateSerializers(data=request.data)
+            if serializer.is_valid(raise_exception=True):
+                serializer.save(confirmed=True)
+                context = {
+                    "is_done": True,
+                    "message": "با موفقیا ساخته شد ",
+                    "data": serializer.data,
+                }
+                return Response(data=context, status=status.HTTP_201_CREATED)
