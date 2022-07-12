@@ -212,7 +212,7 @@ class ViewedApiView(generics.GenericAPIView):
 from rest_framework.permissions import AllowAny
 
 from .serializers import ImageSerializer
-
+import json
 
 class WantCreateApiView(generics.CreateAPIView):
     serializer_class = WandAdCreateSerializers
@@ -221,7 +221,8 @@ class WantCreateApiView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         serializer = WandAdCreateSerializers(data=request.data,context={'request':request})
         if serializer.is_valid(raise_exception=True):
-                serializer.save(confirmed=True)
+                json_obj = json.loads(serializer.validated_data['data'])
+                serializer.save(confirmed=True,data=json_obj)
                 context = {
                     "is_done": True,
                     "message": "با موفقیا ساخته شد ",
