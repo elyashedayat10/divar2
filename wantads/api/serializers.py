@@ -1,7 +1,9 @@
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+import base64
 
+from django.core.files.base import ContentFile
 from categories.api.serializers import CategorySerializer
 
 from ..models import Bookmark, Image, Note, WantAd
