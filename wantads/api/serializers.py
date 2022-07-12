@@ -11,6 +11,8 @@ from ..models import Bookmark, Image, Note, WantAd
 
 class ImageSerializer(serializers.Serializer):
       image = Base64ImageField()
+      want=serializers.IntegerField()
+
 
 #     class Meta:
 #         model = Image
