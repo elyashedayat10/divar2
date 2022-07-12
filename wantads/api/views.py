@@ -229,3 +229,25 @@ class WantCreateApiView(generics.CreateAPIView):
                     "data": serializer.data,
                 }
                 return Response(data=context, status=status.HTTP_201_CREATED)
+            
+            
+class ImageUploadApiView(generics.GenericAPIView):
+    serializer_class = ImageSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data, many=True)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            context = {
+                "is_done": True,
+                "message": "با موفقیا ساخته شد ",
+                "data": serializer.data,
+            }
+            return Response(data=context, status=status.HTTP_201_CREATED)
+        context = {
+            "is_done": False,
+            "message": "خطا ",
+            "data": serializer.errorse,
+        }
+        return Response(data=context, status=status.HTTP_200_OK)
+            
