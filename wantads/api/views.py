@@ -221,8 +221,8 @@ class WantCreateApiView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         serializer = WandAdCreateSerializers(data=request.data,context={'request':request})
         if serializer.is_valid(raise_exception=True):
-                json_obj = json.loads(serializer.validated_data['data'])
-                serializer.save(confirmed=True,data=json_obj)
+              
+                serializer.save(confirmed=True)
                 context = {
                     "is_done": True,
                     "message": "با موفقیا ساخته شد ",
