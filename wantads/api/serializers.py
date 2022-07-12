@@ -68,6 +68,8 @@ class BookmarkSerializer(serializers.ModelSerializer):
 
 
 class WandAdCreateSerializers(serializers.ModelSerializer):
+    image = ImageSerializer(many=True)
+
     class Meta:
         model = WantAd
         fields = (
@@ -87,14 +89,10 @@ class WandAdCreateSerializers(serializers.ModelSerializer):
         read_only_fields = ("id",)
 
     def create(self, validated_data):
-        foo = Foo.objects.create(
-            uploaded_by=self.context["request"].user, **validated_data
+        images = validated_data.pop("image")
+        want_obj = WantAd.objects.create(
+            user=self.context["request"].user, **validated_data
         )
-        return foo
-
-    def create(self, validated_data):
-        tracks_data = validated_data.pop("tracks")
-        album = Album.objects.create(**validated_data)
-        for track_data in tracks_data:
-            Track.objects.create(album=album, **track_data)
-        return album
+        for image in images:
+            Image.objects.create(want=want_obj, **image)
+        return want_obj
