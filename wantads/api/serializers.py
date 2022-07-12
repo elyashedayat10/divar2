@@ -84,7 +84,7 @@ class WandAdCreateSerializers(serializers.ModelSerializer):
             "long",
             "show_phone",
             "data",
-            "name",
+            "image",
         )
         read_only_fields = ("id",)
 
