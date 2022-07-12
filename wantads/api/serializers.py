@@ -72,8 +72,7 @@ class BookmarkSerializer(serializers.ModelSerializer):
 
 
 class WandAdCreateSerializers(serializers.ModelSerializer):
-    image = serializers.ListField()
-
+    
     class Meta:
         model = WantAd
         fields = (
@@ -93,13 +92,7 @@ class WandAdCreateSerializers(serializers.ModelSerializer):
         read_only_fields = ("id",)
 
     def create(self, validated_data):
-        images = validated_data.pop("image")
         want_obj = WantAd.objects.create(
             user=self.context["request"].user, **validated_data
         )
-        for image in images:
-            format, imgstr = image.split(';base64,')
-            ext = format.split('/')[-1]
-            want_image = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
-            Image.objects.create(want=want_obj, image=want_image)
         return want_obj
