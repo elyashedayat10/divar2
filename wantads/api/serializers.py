@@ -10,12 +10,12 @@ from ..models import Bookmark, Image, Note, WantAd
 
 
 class ImageSerializer(serializers.Serializer):
-#       image = Base64ImageField()
+      image = Base64ImageField()
 
-    class Meta:
-        model = Image
-        fields = ("id", "image")
-        read_only_fields = ("id",)
+#     class Meta:
+#         model = Image
+#         fields = ("id", "image")
+#         read_only_fields = ("id",)
 
 
 class WandAdSerializers(serializers.ModelSerializer):
