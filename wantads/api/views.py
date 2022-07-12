@@ -219,8 +219,8 @@ class WantCreateApiView(generics.CreateAPIView):
     queryset = WantAd.objects.all()
     
     def post(self, request, *args, **kwargs):
-         serializer = WandAdCreateSerializers(data=request.data)
-            if serializer.is_valid(raise_exception=True):
+        serializer = WandAdCreateSerializers(data=request.data)
+        if serializer.is_valid(raise_exception=True):
                 serializer.save(confirmed=True)
                 context = {
                     "is_done": True,
