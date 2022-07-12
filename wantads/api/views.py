@@ -237,7 +237,7 @@ class ImageUploadApiView(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data, many=True)
         if serializer.is_valid(raise_exception=True):
-            serializer.save()
+            Image.objects.create(image=serializer.validated_data['image'], want=serializer.validated_data['want'])
             context = {
                 "is_done": True,
                 "message": "با موفقیا ساخته شد ",
