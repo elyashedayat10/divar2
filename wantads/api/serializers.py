@@ -70,7 +70,7 @@ class BookmarkSerializer(serializers.ModelSerializer):
 
 
 class WandAdCreateSerializers(serializers.ModelSerializer):
-    image = ImageSerializer(many=True)
+    image = Base64ImageField()
 
     class Meta:
         model = WantAd
@@ -95,6 +95,6 @@ class WandAdCreateSerializers(serializers.ModelSerializer):
         want_obj = WantAd.objects.create(
             user=self.context["request"].user, **validated_data
         )
-        for image in images:
-            Image.objects.create(want=want_obj, **image)
+#         for image in images:
+        Image.objects.create(want=want_obj, **images)
         return want_obj
