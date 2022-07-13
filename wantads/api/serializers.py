@@ -112,12 +112,10 @@ class WandAdCreateSerializers(serializers.ModelSerializer):
             user=self.context['request'].user, **validated_data
         )
         for image in images:
-            if len(image) % 4:
-                # not a multiple of 4, add padding:
-                image += '=' * (4 - len(image) % 4)
-                # value.decode("base64").encode("hex")
             format, imgstr = image.split(';base64,')
             ext = format.split('/')[-1]
-            want_photo = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
-            Image.objects.create(want=want_obj, image=want_photo)
+            pad = len(imgstr) % 4
+            phone=imgstr + "=" * pad
+            data = ContentFile(base64.b64decode(phone), name='temp.' + ext)
+            Image.objects.create(want=want_obj, image=data)
         return want_obj
