@@ -44,7 +44,7 @@ class ImageSerializer(serializers.Serializer):
 class WandAdSerializers(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField("want_ad:detail", lookup_field="pk")
     categories = serializers.SerializerMethodField()
-    images = serializers.SerializerMethodField()
+    # images = serializers.SerializerMethodField()
     user = serializers.CharField(source="user.username", read_only=True)
 
     class Meta:
@@ -65,19 +65,14 @@ class WandAdSerializers(serializers.ModelSerializer):
             "show_phone",
             "data",
             "special",
-            "images",
+            "logo",
         )
-        read_only_fields = ("id", "user", "images")
-        # depth = 1
-        # depth=1  show all info for relational fields
-
-        #
-
+        read_only_fields = ("id", "user", "logo")
     def get_categories(self, obj):
         return CategorySerializer(obj.category).data
 
-    def get_images(self, obj):
-        return ImageSerializer(obj.images.all(), many=True).data
+#     def get_images(self, obj):
+#         return ImageSerializer(obj.images.all(), many=True).data
 
 
 class NoteSerializer(serializers.ModelSerializer):
