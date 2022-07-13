@@ -65,12 +65,18 @@ class NoteSerializer(serializers.ModelSerializer):
         fields = ("user", "text", "want")
         read_only_fields = ("user",)
 
-
 class BookmarkSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bookmark
         fields = ("user", "want")
         read_only_fields = ("user",)
+
+    def create(self, validated_data):
+        user = validated_data.get('user')
+        want = validated_data.get('want')
+        if Bookmark.objects.filter(user=user, want=want).exists():
+            raise ValidationError('already exist')
+        return super().create(validated_data)
 
 
 class WandAdCreateSerializers(serializers.ModelSerializer):
