@@ -241,7 +241,7 @@ class ImageUploadApiView(generics.GenericAPIView):
             context = {
                 "is_done": True,
                 "message": "با موفقیا ساخته شد ",
-                "data": serializer.data,
+    
             }
             return Response(data=context, status=status.HTTP_201_CREATED)
         context = {
