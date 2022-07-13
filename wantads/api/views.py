@@ -39,26 +39,18 @@ class JSONResponseRenderer(JSONRenderer):
 class HomeApiView(generics.GenericAPIView):
     queryset = WantAd.objects.all()
     serializer_class = WandAdSerializers
-    renderer_classes = [JSONResponseRenderer]
-    # def get(self, request, *args, **kwargs):
-    # try:
-    # serializer = WandAdSerializers(
-    #     instance=queryset, many=True, context={"request": request}
-    # )
-    # context = {
-    #     "is_done": True,
-    #     "message": "لیست تمام محصولان",
-    #     "data": serializer.data,
-    # }
-    # return Response(data=context, status=status.HTTP_200_OK)
 
-    #     # except:
-    #
-    #     contex = {
-    #     'is_done': False,
-    #     'message': 'خطا در انجام عملیات'
-    #     }
-    # return Response(data=contex, status=status.HTTP_400_BAD_REQUEST)
+    def get(self, request, *args, **kwargs):
+        queryset = self.queryset.filter(city__iexact=request.query_params.get("city"))
+        serializer = WandAdSerializers(
+            instance=queryset, many=True, context={"request": request}
+        )
+        context = {
+            "is_done": True,
+            "message": "لیست تمام محصولان",
+            "data": serializer.data,
+        }
+        return Response(data=context, status=status.HTTP_200_OK)
 
 
 class CategoryWantAdApiView(generics.GenericAPIView):
