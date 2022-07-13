@@ -226,7 +226,7 @@ class WantCreateApiView(generics.CreateAPIView):
                 context = {
                     "is_done": True,
                     "message": "با موفقیا ساخته شد ",
-                    "data": serializer.data,
+                    "data": serializer,
                 }
                 return Response(data=context, status=status.HTTP_201_CREATED)
             
