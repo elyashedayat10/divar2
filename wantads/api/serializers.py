@@ -101,7 +101,7 @@ class BookmarkSerializer(serializers.ModelSerializer):
 
 
 class WandAdCreateSerializers(serializers.ModelSerializer):
-    external_image = ImageSerializer(many=True)
+    external_image=serializers.ListField()
 
     class Meta:
         model = WantAd
