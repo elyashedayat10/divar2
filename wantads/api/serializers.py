@@ -9,8 +9,9 @@ from categories.api.serializers import CategorySerializer
 from ..models import Bookmark, Image, Note, WantAd
 
 
+
 class ImageSerializer(serializers.Serializer):
-      image = Base64ImageField()
+    image = Base64ImageField()
 
 
 #     class Meta:
@@ -73,32 +74,21 @@ class BookmarkSerializer(serializers.ModelSerializer):
 
 
 class WandAdCreateSerializers(serializers.ModelSerializer):
-    image = ImageSerializer()
+    external_image = ImageSerializer(many=True)
+
     class Meta:
         model = WantAd
         fields = (
-            "id",
-            "title",
-            "description",
-            "active_chat",
-            "category",
-            "city",
-            "zone",
-            "lat",
-            "long",
-            "show_phone",
-            "data",
-            "image",
+        "id", "title", "description", "active_chat", "category", "city", "zone", "lat", "long", "show_phone", "data",
+        "external_image"
         )
         read_only_fields = ("id",)
 
     def create(self, validated_data):
-        images = validated_data.pop('image')
+        images = validated_data.pop('external_image')
         want_obj = WantAd.objects.create(
-            user=self.context["request"].user, **validated_data
+            user=user_ob.objects.first(), **validated_data
         )
-        # file = 'R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
-        # Image.objects.create(want=want_obj,image=file)
         for image in images:
-            Image.objects.create(want=want_obj, image=image)
+            Image.objects.create(want=want_obj, **image)
         return want_obj
