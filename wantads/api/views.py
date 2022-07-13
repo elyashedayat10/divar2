@@ -214,21 +214,27 @@ from rest_framework.permissions import AllowAny
 from .serializers import ImageSerializer
 import json
 
-class WantCreateApiView(generics.CreateAPIView):
+class WantCreateApiView(generics.GenericAPIView):
     serializer_class = WandAdCreateSerializers
-    queryset = WantAd.objects.all()
-    
+
+    # permission_classes = [AllowAny,]
+
     def post(self, request, *args, **kwargs):
-        serializer = WandAdCreateSerializers(data=request.data,context={'request':request})
+        serializer = WandAdCreateSerializers(data=request.data, context={'request': request})
         if serializer.is_valid(raise_exception=True):
-              
-                serializer.save(confirmed=True)
-                context = {
-                    "is_done": True,
-                    "message": "با موفقیا ساخته شد ",
-                    "data": serializer,
-                }
-                return Response(data=context, status=status.HTTP_201_CREATED)
+            serializer.save(confirmed=True)
+            context = {
+                "is_done": True,
+                "message": "با موفقیا ساخته شد ",
+                # "data": serializer,
+            }
+            return Response(data=context, status=status.HTTP_201_CREATED)
+        context = {
+            "is_done": False,
+            "message": "خطا ",
+            "data": serializer.errorse,
+        }
+        return Response(data=context, status=status.HTTP_400_BAD_REQUEST)
             
             
 class ImageUploadApiView(generics.GenericAPIView):
