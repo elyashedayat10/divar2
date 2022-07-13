@@ -114,7 +114,7 @@ class WandAdCreateSerializers(serializers.ModelSerializer):
     def create(self, validated_data):
         images = validated_data.pop('external_image')
         want_obj = WantAd.objects.create(
-            user=user_ob.objects.first(), **validated_data
+            user=self.context['request'].user, **validated_data
         )
         for image in images:
             if len(image) % 4:
