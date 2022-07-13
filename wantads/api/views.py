@@ -41,7 +41,7 @@ class HomeApiView(generics.GenericAPIView):
     serializer_class = WandAdSerializers
 
     def get(self, request, *args, **kwargs):
-        queryset = self.queryset.filter(city__iexact=request.query_params.get("city"))
+        queryset = self.queryset.filter(city__iexact=request.query_params.get("city", 'تهران'))
         serializer = WandAdSerializers(
             instance=queryset, many=True, context={"request": request}
         )
