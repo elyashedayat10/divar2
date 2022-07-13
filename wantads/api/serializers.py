@@ -96,13 +96,15 @@ class BookmarkSerializer(serializers.ModelSerializer):
 
 
 class WandAdCreateSerializers(serializers.ModelSerializer):
+    # external_image = ImageSerializer(many=True)
     external_image=serializers.ListField()
 
     class Meta:
         model = WantAd
         fields = (
-        "id", "title", "description", "active_chat", "category", "city", "zone", "lat", "long", "show_phone", "data",
-        "external_image"
+            "id", "title", "description", "active_chat", "category", "city", "zone", "lat", "long", "show_phone",
+            "data",
+            "external_image"
         )
         read_only_fields = ("id",)
 
