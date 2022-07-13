@@ -7,6 +7,27 @@ from django.core.files.base import ContentFile
 from categories.api.serializers import CategorySerializer
 
 from ..models import Bookmark, Image, Note, WantAd
+import base64
+
+from django.core.files.base import ContentFile
+from drf_extra_fields.fields import Base64ImageField
+from gprof2dot import basestring
+from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
+
+from categories.api.serializers import CategorySerializer
+
+from ..models import Bookmark, Image, Note, WantAd
+
+import uuid
+import base64
+import imghdr
+
+from django.utils.translation import ugettext_lazy as _
+from django.core.files.base import ContentFile
+from rest_framework import serializers
+
+
 
 
 
@@ -93,8 +114,15 @@ class WandAdCreateSerializers(serializers.ModelSerializer):
     def create(self, validated_data):
         images = validated_data.pop('external_image')
         want_obj = WantAd.objects.create(
-            user= self.context['request'].user, **validated_data
+            user=user_ob.objects.first(), **validated_data
         )
         for image in images:
-            Image.objects.create(want=want_obj, **image)
+            if len(image) % 4:
+                # not a multiple of 4, add padding:
+                image += '=' * (4 - len(image) % 4)
+                # value.decode("base64").encode("hex")
+            format, imgstr = image.split(';base64,')
+            ext = format.split('/')[-1]
+            want_photo = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
+            Image.objects.create(want=want_obj, image=want_photo)
         return want_obj
